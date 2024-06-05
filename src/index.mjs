@@ -26,7 +26,10 @@ async function checkMongoConnection() {
 
 async function checkRedisConnection() {
   try {
-    const client = redis.createClient({ host: redisHost, port: redisPort });
+    // const client = redis.createClient({ host: redisHost, port: redisPort });
+    const client = redis.createClient({
+      url: `redis://${redisHost}:${redisPort}`,
+    });
     await client.connect();
     console.log("Connected to Redis successfully!");
     client.quit(); // Disconnect from Redis after successful check
@@ -54,6 +57,7 @@ app.get("/", (req, res) => {
 
 (async () => {
   await Promise.all([checkMongoConnection(), checkRedisConnection()]);
+  // await Promise.all([checkMongoConnection()]);
 
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
