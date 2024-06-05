@@ -1,6 +1,6 @@
 FROM node:latest as build
 
-# WORKDIR /app
+WORKDIR /app
 
 COPY . .
 
@@ -8,14 +8,14 @@ RUN npm install
 
 FROM node:20.14.0-alpine
 
-# WORKDIR /app
+WORKDIR /app
 
-COPY --from=build ./node_modules ./node_modules
+COPY --from=build /app/node_modules /app/node_modules
 
-COPY --from=build ./public ./public
+COPY --from=build /app/public /app/public
 
-COPY --from=build ./src ./src
+COPY --from=build /app/src /app/src
 
-COPY --from=build ./package.json .
+COPY --from=build /app/package.json /app
 
 CMD [ "npm", "start" ]
